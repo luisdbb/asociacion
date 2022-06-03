@@ -1,15 +1,29 @@
 package entidades;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
+import interfaces.Exportable;
 import utils.Utilidades;
 import validaciones.Validaciones;
 
-public class Socio {
+public class Socio implements Exportable<Socio>, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 460939272535361888L;
 	private int id;
 	private String nombre;
 	private LocalDate fechanac;
@@ -132,8 +146,22 @@ public class Socio {
 		String nombre = "";
 		do {
 			System.out.println("Introduzca el nombre del nuevo socio: (solo letras entre 3 y 150 caracteres)");
-			nombre = in.next();
-			valido = Validaciones.validarNombreSocio(nombre);
+			try {
+				nombre = in.next();
+				valido = Validaciones.validarNombreSocio(nombre);
+			} catch (NoSuchElementException ex) {
+				System.out.println("Se ha producido una NoSuchElementException" + ex.getMessage());
+				ex.printStackTrace();
+			} catch (IllegalStateException ex) {
+				System.out.println("Se ha producido una IllegalStateException" + ex.getMessage());
+				ex.printStackTrace();
+			} catch (PatternSyntaxException ex) {
+				System.out.println("Se ha producido una PatternSyntaxException" + ex.getMessage());
+				ex.printStackTrace();
+			} catch (Exception ex) {
+				System.out.println("Se ha producido una Exception" + ex.getMessage());
+				ex.printStackTrace();
+			}
 			if (!valido)
 				System.out.println("Valor para el nombre del nuevo socio NO válido.");
 		} while (!valido);
@@ -190,6 +218,51 @@ public class Socio {
 		}
 		ret = new Socio();
 		ret = new Socio(-1, nombre, fechanac, LocalDate.now(), cat, mascotas);
+
+		return ret;
+	}
+
+	@Override
+	public boolean exportarCaracteres(Socio elemento, String rutafich) {
+		boolean ret = false;
+		File f = new File(rutafich);
+		FileWriter fo = null;
+		try {
+			fo = new FileWriter(f);
+			fo.write(elemento.mostrarCompleto());
+			fo.flush();
+			fo.close();
+			System.out.println("Se han exportado correctamente el socio.");
+			ret = true;
+		} catch (Exception e) {
+			System.out.println("Se ha producido una Exception:" + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return ret;
+	}
+
+	@Override
+	public boolean exportarBinario(Socio elemento, String rutafich) {
+		boolean ret = false;
+		File f = new File(rutafich);
+		FileOutputStream fo;
+		try {
+			fo = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fo);
+			oos.writeObject((Socio) elemento);
+			oos.flush();
+			oos.close();
+			fo.close();
+			System.out.println("Se han exportado correctamente el socio.");
+			ret = true;
+		} catch (FileNotFoundException e) {
+			System.out.println("Se ha producido una FileNotFoundException:" + e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Se ha producido una IOException:" + e.getMessage());
+			e.printStackTrace();
+		}
 
 		return ret;
 	}
