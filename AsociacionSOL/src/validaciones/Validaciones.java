@@ -41,4 +41,9 @@ public class Validaciones {
 		return comprobacion.matches();
 	}
 
+	public static boolean validarFechaNacimientoSocio(LocalDate fechanac) {
+		LocalDate hoyMenos16Anios = LocalDate.now().minusYears(16);
+		return fechanac.isBefore(hoyMenos16Anios);
+	}
+
 }

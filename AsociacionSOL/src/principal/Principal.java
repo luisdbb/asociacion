@@ -8,7 +8,7 @@ import entidades.Socio;
 public class Principal {
 
 	public static void main(String[] args) {
-		
+		Categoria.mostrarTodos();
 		Mascota m = new Ave();
 		
 		int[] idsMasjovenMasvieja = Mascota.getIdsMasViejoMasJoven();
