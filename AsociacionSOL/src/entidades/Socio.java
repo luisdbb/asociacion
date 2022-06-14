@@ -104,7 +104,7 @@ public class Socio implements Exportable<Socio>, Serializable {
 
 	public String data() {
 		String ret = "";
-		ret += this.getId() + "|" + this.getNombre() + "|"
+		ret += this.getId() + ". " + this.getNombre() + "|"
 				+ this.getFechanac().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "|";
 		ret += this.getFechaalta().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "|";
 		ret += this.getCategoria().getId();
@@ -266,5 +266,13 @@ public class Socio implements Exportable<Socio>, Serializable {
 
 		return ret;
 	}
+
+	@Override
+	public String toString() {
+		return "Socio [id=" + id + ", nombre=" + nombre + ", fechanac=" + fechanac.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + ", fechaalta=" + fechaalta
+				+ ", categoria=" + categoria + ", mascotas=" + mascotas + "]";
+	}
+	
+	
 
 }

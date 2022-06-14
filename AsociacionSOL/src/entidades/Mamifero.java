@@ -1,6 +1,9 @@
 package entidades;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import utils.Utilidades;
 
 public class Mamifero extends Mascota {
 
@@ -41,6 +44,18 @@ public class Mamifero extends Mascota {
 
 	public void setPeso(double peso) {
 		this.peso = peso;
+	}
+	
+	@Override
+	public String toString() {
+		String ret = "Mamifero [id" + this.getId() + " peso=" + Utilidades.formatearDecimales(this.getPeso(), 3) + "Kgs, nombre=" + nombre
+				+ ", fechanac=" + fechanac.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) + ", ¿adoptada?"
+				+ (adoptada ? "Sí" : "No");
+		if (carnet != null)
+			ret += ", carnet=" + carnet.getId() + ", " + carnet.getVacunas();
+		if (socio != null)
+			ret += ", socio=" + socio.getId() + ", nombre=" + socio.getNombre();
+		return ret;
 	}
 
 }

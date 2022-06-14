@@ -84,7 +84,7 @@ public class SocioDAO implements OperacionesCRUD<Socio> {
 				ret = new Socio();
 				ret.setId(idBD);
 				ret.setNombre(nombre);
-				ret.setFechaalta(fechanac);
+				ret.setFechanac(fechanac);
 				ret.setFechaalta(fechaalta);
 				CategoriaDAO catDAO = new CategoriaDAO(this.conex);
 				ret.setCategoria(catDAO.buscarPorID(idcat));
